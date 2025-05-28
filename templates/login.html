@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Login</h2>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username_or_email.label(class="form-control-label") }}
+            {% if form.username_or_email.errors %}
+                {{ form.username_or_email(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.username_or_email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.username_or_email(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-control-label") }}
+            {% if form.password.errors %}
+                {{ form.password(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.password(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.mfa_token.label(class="form-control-label") }}
+            {{ form.mfa_token(class="form-control form-control-lg", placeholder="If MFA is enabled") }}
+            {% if form.mfa_token.errors %}
+                <div class="invalid-feedback d-block"> <!-- d-block to show error even if field is not invalid -->
+                    {% for error in form.mfa_token.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-check">
+            {{ form.remember(class="form-check-input") }}
+            {{ form.remember.label(class="form-check-label") }}
+        </div>
+        <div class="form-group mt-3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    <p>Need an account? <a href="{{ url_for('register') }}">Register Here</a></p>
+{% endblock %}
