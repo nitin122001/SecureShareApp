@@ -1,0 +1,772 @@
+/* static/style.css - More Advanced Design */
+
+/* --- Variables --- */
+:root {
+    --primary-color: #4A90E2; /* A pleasing blue */
+    --primary-color-darker: #357ABD;
+    --primary-color-lighter: #7BB9F3;
+    --primary-color-rgb: 74, 144, 226; /* Corresponding RGB for #4A90E2, for rgba use */
+    --secondary-color: #50E3C2; /* A vibrant teal/mint */
+    --accent-color: #F5A623; /* Orange for accents */
+    --light-gray: #f4f7f6;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #555;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --body-bg: #f0f2f5; /* Slightly different body background */
+    --border-radius: 8px; /* More rounded */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.15);
+     --box-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08); /* Added for alerts etc. */
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Roboto Slab', serif;
+    --transition-speed: 0.3s ease;
+}
+
+/* --- General Body & Typography --- */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--body-bg);
+    color: var(--text-color);
+    line-height: 1.7;
+    padding-top: 80px; /* Increased for taller navbar */
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    display: flex; /* Use flexbox to push footer down */
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+h1 { font-size: 2.8rem; } /* Added H1 size */
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.8rem; }
+h4 { font-size: 1.5rem; } /* Added H4 size */
+
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--primary-color-darker);
+    text-decoration: none; /* Often looks cleaner without underline on hover for modern UIs */
+}
+
+/* Base Container for Content - Ensures horizontal padding and max-width */
+.container {
+    max-width: 1140px;
+    margin-left: auto; /* Center the container */
+    margin-right: auto; /* Center the container */
+    padding-left: 20px; /* Horizontal padding */
+    padding-right: 20px; /* Horizontal padding */
+    width: 100%; /* Ensure it takes full width up to max-width */
+}
+
+/* Ensure images within content are responsive */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* --- Navbar --- */
+.navbar {
+    background: linear-gradient(to right, var(--primary-color), var(--primary-color-darker));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 0.8rem 1rem; /* Base padding */
+    position: fixed;
+    top: 0;
+    left: 0; /* Ensure it covers the full width */
+    right: 0; /* Ensure it covers the full width */
+    width: 100%; /* Redundant with left/right 0, but safe */
+    z-index: 1030;
+    display: flex; /* Use flexbox for internal layout */
+    align-items: center; /* Vertically align items */
+}
+
+.navbar .container { /* Constrain navbar content width */
+     max-width: 1140px; /* Match main container max-width */
+     padding: 0 20px; /* Keep padding consistent */
+     margin: auto; /* Center within the fixed navbar */
+     display: flex; /* Flex within the container */
+     align-items: center;
+     justify-content: space-between; /* Space out brand, toggler, and collapse area */
+     width: 100%; /* Ensure container takes full width */
+}
+
+/* Navbar Toggler Button (Hidden by default) */
+.navbar-toggler {
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--border-radius);
+    color: white; /* Icon color */
+    cursor: pointer;
+    transition: box-shadow var(--transition-speed);
+    display: none; /* Hidden by default on larger screens */
+}
+
+.navbar-toggler:hover {
+    border-color: white;
+}
+
+.navbar-toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+}
+
+/* Navbar Toggler Icon (Hamburger) */
+.navbar-toggler-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* White hamburger icon */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+
+
+.navbar-brand {
+    font-family: var(--font-secondary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white !important; /* !important might be needed to override framework */
+    letter-spacing: 1px;
+    padding-top: 0.3125rem; /* Adjust vertical alignment if needed */
+    padding-bottom: 0.3125rem; /* Adjust vertical alignment if needed */
+    margin-right: 1rem; /* Add some space between brand and toggler on wide screens */
+}
+/* In mobile, the toggler will appear next to the brand, spacing handled by container */
+
+
+/* Navbar Nav Container */
+.navbar-nav {
+    display: flex; /* Arrange nav links horizontally by default */
+    align-items: center;
+    list-style: none; /* Remove default list styling */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    flex-direction: row; /* Ensure horizontal on large screens */
+}
+
+.navbar-nav .nav-item { /* Added nav-item if using list structure */
+    margin: 0 0.25rem; /* Space between nav items */
+}
+
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important; /* !important might be needed */
+    font-weight: 500;
+    padding: 0.5rem 1rem; /* Padding for individual links */
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    display: block; /* Make the whole padded area clickable */
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: white !important; /* !important might be needed */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.navbar-nav .nav-link.logout-link:hover { /* Special hover for logout */
+    background-color: rgba(220, 53, 69, 0.2); /* Faint red */
+}
+
+/* Wrapper for the collapsible content (menu links) */
+.navbar-collapse {
+    flex-grow: 1; /* Allow collapse area to take available horizontal space on large screens */
+    align-items: center; /* Vertically align contents */
+    /* Add justify-content here if you want links left/right justified
+       e.g., justify-content: flex-end; to push links to the right */
+}
+
+
+/* --- Main Content Wrapper --- */
+/* Apply padding/background to the content area *inside* the container */
+.main-content {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-top: 2rem; /* Space below navbar */
+    margin-bottom: 2rem;
+    /* This element is expected to be placed inside a .container in your HTML */
+}
+
+/* Ensure main content area grows to push footer down */
+.content-area-wrapper { /* Add a wrapper around main content if using flex column on body */
+    flex-grow: 1;
+}
+
+
+/* --- Forms --- */
+.form-wrapper {
+    max-width: 500px;
+    margin: 0 auto; /* Center form wrappers */
+    padding: 1rem 0; /* Add some vertical padding inside wrapper if needed */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: var(--dark-gray);
+}
+
+.form-control {
+    display: block; /* Ensure it takes full width */
+    width: 100%; /* Takes full width of its container */
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5; /* Standard line height */
+    color: var(--text-color);
+    background-color: #fdfdfd;
+    background-clip: padding-box;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    -webkit-appearance: none; /* Remove default appearance on iOS */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color-lighter); /* Use a lighter color for focus border */
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25); /* Use RGB variable */
+    outline: none; /* Remove default outline */
+}
+
+/* Style for validation states if needed (requires additional classes) */
+/* .form-control.is-valid { border-color: #28a745; }
+.form-control.is-invalid { border-color: #dc3545; } */
+
+
+.form-check { /* Wrapper for checkbox/radio */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Align vertically */
+    margin-bottom: 0.5rem;
+}
+.form-check-input {
+    margin-right: 0.5rem; /* Space between input and label */
+    flex-shrink: 0; /* Prevent input from shrinking */
+}
+.form-check-label { /* Label for checkbox/radio */
+    margin-bottom: 0; /* Remove default label margin */
+}
+
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block; /* Allows margin/padding/width */
+    font-family: var(--font-primary); /* Use primary font */
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem; /* Base button font size */
+    line-height: 1.5; /* Align text vertically */
+    font-weight: 600;
+    text-align: center; /* Center text */
+    vertical-align: middle; /* Align vertically with text */
+    cursor: pointer;
+    user-select: none; /* Prevent selection */
+    border: 1px solid transparent; /* Consistent border */
+    transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+    text-decoration: none; /* Remove underline on hover */
+}
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.btn:focus {
+    outline: 0; /* Remove default focus outline */
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.5); /* Custom focus ring */
+}
+
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color); /* Add border color for consistency */
+}
+.btn-primary:hover {
+    background-color: var(--primary-color-darker);
+    border-color: var(--primary-color-darker);
+    color: white; /* Ensure color stays white */
+}
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.5);
+}
+
+
+.btn-secondary { /* Using our new secondary color */
+    background-color: var(--secondary-color);
+    color: var(--text-color); /* Keep dark text for contrast */
+     border-color: var(--secondary-color);
+}
+.btn-secondary:hover {
+    background-color: #40c2a6; /* Darker teal */
+    border-color: #40c2a6;
+    color: var(--text-color); /* Ensure text color remains */
+}
+.btn-secondary:focus {
+     box-shadow: 0 0 0 0.25rem rgba(80, 227, 194, 0.5); /* RGBA for secondary color */
+}
+
+
+/* Added standard colors for robustness */
+.btn-success {
+    background-color: #28a745; color: white; border-color: #28a745;
+}
+.btn-success:hover {
+    background-color: #218838; color: white; border-color: #1e7e34;
+}
+.btn-success:focus {
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.5);
+}
+
+.btn-danger {
+    background-color: #dc3545; color: white; border-color: #dc3545;
+}
+.btn-danger:hover {
+    background-color: #c82333; color: white; border-color: #bd2130;
+}
+.btn-danger:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
+}
+
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: calc(var(--border-radius) * 0.75); /* Slightly less rounded for small */
+}
+
+.btn i { /* Style for icons in buttons */
+    margin-right: 0.5em;
+}
+
+/* --- Alerts --- */
+.alert {
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-left: 5px solid;
+    box-shadow: var(--box-shadow-sm);
+    position: relative; /* For potential close buttons */
+}
+.alert-success { border-left-color: #28a745; background-color: #e9f7ef; color: #155724; }
+.alert-danger { border-left-color: #dc3545; background-color: #fce8eA; color: #721c24; }
+.alert-warning { border-left-color: #ffc107; background-color: #fff8e1; color: #856404; }
+.alert-info { border-left-color: #17a2b8; background-color: #e1f5fe; color: #0c5460; }
+
+
+/* --- File List / List Groups --- */
+.list-group { /* Added list-group wrapper styles */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-group-item {
+    background-color: var(--card-bg);
+    border: 1px solid var(--medium-gray);
+    padding: 1rem 1.25rem;
+    margin-bottom: -1px; /* Overlap borders */
+    transition: background-color var(--transition-speed), transform 0.1s ease-out;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically align content */
+    justify-content: space-between; /* Space out content and actions */
+    flex-wrap: wrap; /* Allow content to wrap on smaller screens */
+}
+.list-group-item:hover {
+    background-color: #f8f9fa; /* Slight hover effect */
+    z-index: 2; /* Bring to front on hover */
+    border-color: var(--primary-color-lighter); /* Highlight border on hover */
+}
+.list-group-item:first-child {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+.list-group-item .file-icon {
+    margin-right: 10px;
+    color: var(--primary-color);
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.list-group-item .file-info { /* Wrapper for file name/size etc */
+     flex-grow: 1; /* Allow info to take available space */
+     margin-right: 1rem; /* Space between info and actions */
+     word-break: break-all; /* Prevent long file names from overflowing */
+}
+
+.list-group-item .file-actions {
+    display: flex; /* Arrange actions horizontally */
+    align-items: center;
+    flex-shrink: 0; /* Prevent actions from shrinking */
+    margin-left: auto; /* Push actions to the right */
+    /* Removed margin-left: 10px as flexbox handles spacing */
+}
+.list-group-item .file-actions a {
+    margin-left: 10px; /* Space between action links */
+    /* Removed original margin-left here */
+}
+.list-group-item .file-actions a:first-child {
+     margin-left: 0; /* No left margin on the first action link */
+}
+
+
+/* --- MFA Setup Page Styling --- */
+.mfa-setup-container {
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+}
+.mfa-setup-container h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color); /* Ensure consistency */
+}
+.mfa-setup-container img {
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    background-color: white;
+    box-shadow: var(--box-shadow-sm);
+    max-width: 250px; /* Control QR code size */
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+}
+.mfa-setup-container strong {
+    font-family: monospace;
+    background-color: var(--light-gray);
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    color: var(--dark-gray);
+    word-break: break-all; /* Ensure long keys wrap */
+    display: inline-block; /* Allow padding */
+    margin-top: 0.5rem; /* Space above key */
+}
+
+/* --- Dashboard Welcome Message --- */
+.welcome-banner {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+}
+.welcome-banner h2 {
+    color: white; /* Ensure heading is white */
+    margin-bottom: 0.5rem;
+}
+.welcome-banner p { /* Style paragraph if any */
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--dark-gray);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 2rem 0;
+    margin-top: auto; /* Push footer to the bottom */
+    text-align: center;
+    font-size: 0.9rem;
+    flex-shrink: 0; /* Prevent footer from shrinking */
+}
+.footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+.footer a:hover {
+    color: white;
+    text-decoration: underline; /* Add underline on hover for clarity */
+}
+.footer p { /* Style paragraph if any */
+    margin: 0;
+}
+
+
+/* --- Responsive Adjustments --- */
+
+/* Medium devices (tablets, 992px and down) - Navbar Collapse Breakpoint */
+@media (max-width: 991.98px) {
+    /* Show the toggler button */
+    .navbar-toggler {
+        display: block; /* Use block or flex depending on overall layout needs, block is simplest */
+    }
+
+    /* Navbar container adjustments for mobile layout */
+    .navbar .container {
+        /* Keep display: flex and align-items: center from base styles */
+        flex-wrap: wrap; /* Allow the collapse content to wrap below brand/toggler */
+        /* REMOVED: flex-direction: column; - this was causing stacking issues */
+        /* justify-content: space-between; is still active here to separate brand and toggler */
+    }
+
+    /* Navbar collapse area (the menu itself) */
+    .navbar-collapse {
+         display: none; /* Hide the menu by default */
+         flex-basis: 100%; /* Take full width below the brand/toggler row */
+         flex-grow: 1; /* Allow it to grow vertically if needed */
+         align-items: center; /* Reset alignment */
+         margin-top: 0.5rem; /* Add some space above the collapsed menu */
+         border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separator above menu */
+         padding-top: 0.5rem; /* Space inside the border */
+     }
+
+     /* Style for when the collapse area is shown (requires JS to add `.show`) */
+     .navbar-collapse.show {
+         display: block; /* Or flex if you prefer flex inside */
+     }
+
+
+    /* Navbar Nav list (inside the collapse area) */
+    .navbar-nav {
+        flex-direction: column; /* Stack nav links vertically */
+        width: 100%; /* Take full width */
+        margin: 0; /* Reset margin from base styles */
+        padding: 0; /* Reset padding from base styles */
+        align-items: stretch; /* Stretch items to fill width */
+        text-align: center; /* Center text in links */
+    }
+    .navbar-nav .nav-item {
+        margin: 0.25rem 0; /* Add vertical margin, remove horizontal */
+    }
+    .navbar-nav .nav-link {
+         padding: 0.75rem 1rem; /* Increase clickable area */
+    }
+
+    /* Adjust body padding when menu is collapsed (matches original 80px) */
+     body {
+         padding-top: 80px;
+     }
+     /* NOTE: If the expanded menu makes the navbar taller than 80px, content will
+        be hidden underneath. A more robust solution would involve JS to dynamically
+        adjust body padding based on the expanded navbar height, or avoiding fixed
+        position if layout allows. Assuming fixed 80px padding is acceptable when collapsed. */
+}
+
+/* Small devices (landscape phones, 768px and down) */
+@media (max-width: 767.98px) {
+    /* General adjustments */
+    body {
+        padding-top: 70px; /* Adjust body padding */
+        line-height: 1.6; /* Slightly tighter line height */
+    }
+
+    h1 { font-size: 2.4rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.5rem; }
+    h4 { font-size: 1.3rem; }
+
+    .navbar {
+         padding: 0.6rem 1rem; /* Reduce navbar padding slightly */
+    }
+     .navbar-brand {
+         font-size: 1.6rem; /* Reduce brand size */
+     }
+     .navbar-collapse {
+         margin-top: 0.4rem; /* Slightly less space above menu */
+         padding-top: 0.4rem;
+     }
+
+
+    .main-content {
+        padding: 1.5rem; /* Reduce main content padding */
+        margin-top: 1.5rem; /* Adjust margin */
+        margin-bottom: 1.5rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem; /* Slightly smaller button text */
+    }
+
+    .alert {
+        padding: 1rem; /* Reduce alert padding */
+    }
+
+    /* Adjustments for list items stacking */
+    .list-group-item {
+        flex-direction: column; /* Stack content and actions */
+        align-items: flex-start; /* Align content to the left */
+        padding: 1rem; /* Reduce list item padding */
+    }
+     .list-group-item .file-info {
+         margin-right: 0; /* Remove right margin when stacked */
+         margin-bottom: 10px; /* Add space below info */
+         width: 100%; /* Ensure info takes full width */
+     }
+
+    .list-group-item .file-actions {
+        margin-left: 0; /* Remove auto margin */
+        margin-top: 5px; /* Add space above actions */
+        width: 100%; /* Actions take full width when stacked */
+        justify-content: flex-start; /* Align actions to the left */
+        gap: 10px; /* Add gap between action links */
+    }
+    .list-group-item .file-actions a {
+        margin-left: 0; /* Remove margin between action links within the flex container */
+    }
+
+
+    .mfa-setup-container {
+        padding: 1.5rem; /* Reduce MFA container padding */
+        margin: 1.5rem auto; /* Adjust margin */
+    }
+     .mfa-setup-container img {
+         max-width: 180px; /* Smaller QR code */
+     }
+
+    .welcome-banner {
+        padding: 1.5rem; /* Reduce banner padding */
+        margin-bottom: 1.5rem;
+    }
+    .welcome-banner h2 {
+        font-size: 1.8rem; /* Match main H2 size */
+    }
+     .welcome-banner p {
+         font-size: 1rem; /* Smaller paragraph text */
+     }
+
+
+    .footer {
+        padding: 1.5rem 0; /* Reduce footer padding */
+    }
+}
+
+/* Extra small devices (phones, 576px and down) */
+@media (max-width: 575.98px) {
+    body {
+         padding-top: 60px; /* Adjust body padding for even smaller navbar */
+         font-size: 0.95rem; /* Slightly smaller base font size */
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.4rem; }
+    h4 { font-size: 1.2rem; }
+
+    .container {
+        padding-left: 15px; /* Reduce container padding */
+        padding-right: 15px; /* Reduce container padding */
+    }
+
+    .navbar {
+        padding: 0.5rem 0.75rem; /* Even less navbar padding */
+    }
+    .navbar-brand {
+        font-size: 1.5rem; /* Smaller brand size */
+    }
+
+    .navbar-toggler {
+         padding: 0.15rem 0.5rem; /* Smaller toggler button */
+    }
+     .navbar-toggler-icon {
+         width: 1.25em; /* Smaller icon */
+         height: 1.25em;
+     }
+
+    .navbar-collapse {
+        margin-top: 0.3rem; /* Further reduce space above menu */
+        padding-top: 0.3rem;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0.15rem 0; /* Less vertical margin */
+    }
+     .navbar-nav .nav-link {
+         padding: 0.5rem 1rem; /* Smaller link padding */
+     }
+
+
+    .main-content {
+        padding: 1rem; /* Further reduce main content padding */
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        padding: 0.6rem 0.8rem; /* Reduce form control padding */
+        font-size: 0.95rem;
+    }
+     .form-group {
+         margin-bottom: 1rem; /* Reduce form group margin */
+     }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem; /* Use small button size */
+    }
+
+    .alert {
+        padding: 0.8rem; /* Further reduce alert padding */
+    }
+
+     .list-group-item {
+         padding: 0.8rem; /* Further reduce list item padding */
+     }
+    .list-group-item .file-actions {
+         gap: 5px; /* Reduce gap between action links */
+    }
+
+
+    .mfa-setup-container {
+        padding: 1rem; /* Further reduce MFA container padding */
+        margin: 1rem auto; /* Adjust margin */
+    }
+    .mfa-setup-container img {
+         max-width: 150px; /* Even smaller QR code */
+    }
+
+    .welcome-banner {
+        padding: 1rem; /* Further reduce banner padding */
+        margin-bottom: 1rem;
+    }
+    .welcome-banner h2 {
+        font-size: 1.6rem; /* Match main H2 size */
+    }
+
+    .footer {
+        padding: 1rem 0; /* Further reduce footer padding */
+        font-size: 0.8rem;
+    }
+}
